@@ -18,10 +18,15 @@ class App extends React.Component {
         show_modal: false
     };
 
+    searchByLastName =() => {
+
+    };
+
 
     render() {
         return (
-            <div>
+            <div id="app_wrapper">
+                <input className="form-control" id="input_search_last_name" onKeyUp={this.searchByLastName} type="text" placeholder="Search by last name..."/>
                 <PhoneList items={this.state.phone_book_items}/>
                 <AddNewContactModal/>
                 <button type="button" className="btn btn-dark" id="btn_add_contact" data-toggle="modal"
@@ -49,28 +54,26 @@ class PhoneListItem extends React.Component {
                     </tr>
                 )
             })}
-
             </tbody>
         )
     }
 }
 
-
 class PhoneList extends React.Component {
     render() {
         return (
-            <table className="table table-dark">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <PhoneListItem items={this.props.items}/>
+                <table className="table table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Phone number</th>
+                    </tr>
+                    </thead>
+                    <PhoneListItem items={this.props.items}/>
 
-            </table>
+                </table>
         )
     }
 }
@@ -78,7 +81,7 @@ class PhoneList extends React.Component {
 class AddNewContactModal extends React.Component {
     render() {
         return (
-            <div className="modal fade" id="add_new_contact_modal" tabIndex="-1" role="dialog"  aria-hidden="true">
+            <div className="modal fade" id="add_new_contact_modal" tabIndex="-1" role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -90,21 +93,24 @@ class AddNewContactModal extends React.Component {
                         <div className="modal-body">
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-default"><i className="fa fa-user"></i>&nbsp;&nbsp;First Name</span>
+                                    <span className="input-group-text" id="inputGroup-sizing-default">
+                                        <i className="fa fa-user"></i>&nbsp;&nbsp;First Name</span>
                                 </div>
                                 <input type="text" className="form-control"/>
                             </div>
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-default"><i class="fa fa-users"></i>&nbsp;&nbsp;Last Name</span>
+                                    <span className="input-group-text" id="inputGroup-sizing-default">
+                                        <i class="fa fa-users"></i>&nbsp;&nbsp;Last Name</span>
                                 </div>
-                                <input type="text" className="form-control" />
+                                <input type="text" className="form-control"/>
                             </div>
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-default"><i class="fa fa-phone"></i>&nbsp;&nbsp;Phone</span>
+                                    <span className="input-group-text" id="inputGroup-sizing-default">
+                                        <i class="fa fa-phone"></i>&nbsp;&nbsp;Phone</span>
                                 </div>
-                                <input type="text" className="form-control" />
+                                <input type="text" className="form-control"/>
                             </div>
                         </div>
                         <div className="modal-footer">

@@ -1,10 +1,18 @@
 #btn_add_contact {
     position: fixed;
-    right: 20px;
+    right: 50px;
 }
 
 .input-group-text {
     min-width: 100px;
     width: 125px;
     text-align: left;
+}
+
+#app_wrapper {
+    margin: 50px;
+}
+
+#input_search_last_name {
+    margin-bottom: 10px;
 }
