@@ -1,4 +1,10 @@
-#btn_add_contact{
+#btn_add_contact {
     position: fixed;
     right: 20px;
+}
+
+.input-group-text {
+    min-width: 100px;
+    width: 125px;
+    text-align: left;
 }

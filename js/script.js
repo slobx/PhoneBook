@@ -14,7 +14,8 @@ class App extends React.Component {
             {index: 1, first_name: "Mike", last_name: "Johnson", phone: "+38163111222"},
             {index: 2, first_name: "Jack", last_name: "Shepard", phone: "+38164222333"},
             {index: 3, first_name: "Michael", last_name: "Malone", phone: "+38165444555"}
-        ]
+        ],
+        show_modal: false
     };
 
 
@@ -22,7 +23,10 @@ class App extends React.Component {
         return (
             <div>
                 <PhoneList items={this.state.phone_book_items}/>
-                <button type="button" class="btn btn-dark" id="btn_add_contact">Add contact</button>
+                <AddNewContactModal/>
+                <button type="button" className="btn btn-dark" id="btn_add_contact" data-toggle="modal"
+                        data-target="#add_new_contact_modal">Add contact
+                </button>
             </div>
         )
     }
@@ -55,7 +59,7 @@ class PhoneListItem extends React.Component {
 class PhoneList extends React.Component {
     render() {
         return (
-            <table class="table table-dark">
+            <table className="table table-dark">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -67,6 +71,50 @@ class PhoneList extends React.Component {
                 <PhoneListItem items={this.props.items}/>
 
             </table>
+        )
+    }
+}
+
+class AddNewContactModal extends React.Component {
+    render() {
+        return (
+            <div className="modal fade" id="add_new_contact_modal" tabIndex="-1" role="dialog"  aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLongTitle">Add new contact</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default"><i className="fa fa-user"></i>&nbsp;&nbsp;First Name</span>
+                                </div>
+                                <input type="text" className="form-control"/>
+                            </div>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default"><i class="fa fa-users"></i>&nbsp;&nbsp;Last Name</span>
+                                </div>
+                                <input type="text" className="form-control" />
+                            </div>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default"><i class="fa fa-phone"></i>&nbsp;&nbsp;Phone</span>
+                                </div>
+                                <input type="text" className="form-control" />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-dark" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-dark">Add contact</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         )
     }
 }
