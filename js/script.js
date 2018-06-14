@@ -1,22 +1,27 @@
-let phone_book_items = [];
-phone_book_items.push({index: 1, first_name: "Mike", last_name: "Johnson", phone: "+38163111222"});
-phone_book_items.push({index: 2, first_name: "Jack", last_name: "Shepard", phone: "+38164222333"});
-phone_book_items.push({index: 3, first_name: "Michael", last_name: "Malone", phone: "+38165444555"});
+
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
+
     }
 
     state = {
-        phone_book_items: [
-            {index: 1, first_name: "Mike", last_name: "Johnson", phone: "+38163111222"},
-            {index: 2, first_name: "Jack", last_name: "Shepard", phone: "+38164222333"},
-            {index: 3, first_name: "Michael", last_name: "Malone", phone: "+38165444555"}
-        ],
+        phone_book_items: [],
         show_modal: false
     };
+
+    componentDidMount() {
+        fetch("http://localhost:3000/api/contacts.json")
+            .then(response => {
+                return response.json()
+            })
+            .then(contacts => {
+                this.setState({phone_book_items : contacts});
+                console.log(contacts);
+            })
+    }
 
     searchByLastName =() => {
 
@@ -47,7 +52,7 @@ class PhoneListItem extends React.Component {
                 return (
                     <tr>
                         <td>{item.index}</td>
-                        <td>{item.first_name}</td>
+                        <td>{item.name}</td>
                         <td>{item.last_name}</td>
                         <td>{item.phone}</td>
                         <td>X</td>
@@ -101,14 +106,14 @@ class AddNewContactModal extends React.Component {
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" id="inputGroup-sizing-default">
-                                        <i class="fa fa-users"></i>&nbsp;&nbsp;Last Name</span>
+                                        <i className="fa fa-users"></i>&nbsp;&nbsp;Last Name</span>
                                 </div>
                                 <input type="text" className="form-control"/>
                             </div>
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" id="inputGroup-sizing-default">
-                                        <i class="fa fa-phone"></i>&nbsp;&nbsp;Phone</span>
+                                        <i className="fa fa-phone"></i>&nbsp;&nbsp;Phone</span>
                                 </div>
                                 <input type="text" className="form-control"/>
                             </div>
