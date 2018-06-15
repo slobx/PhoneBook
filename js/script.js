@@ -21,10 +21,28 @@ class App extends React.Component {
                 this.setState({phone_book_items : contacts});
                 console.log(contacts);
             })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     searchByLastName =() => {
 
+    };
+
+    saveContact = () => {
+        let data = {
+            "name": "test_name",
+            "last_name": "test_last_name",
+            "phone" : "test_phone"
+        };
+
+        console.log(JSON.stringify(data));
+
+        fetch('http://localhost:3000/api/post', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        }).then(res => console.log(res));
     };
 
 
@@ -33,7 +51,7 @@ class App extends React.Component {
             <div id="app_wrapper">
                 <input className="form-control" id="input_search_last_name" onKeyUp={this.searchByLastName} type="text" placeholder="Search by last name..."/>
                 <PhoneList items={this.state.phone_book_items}/>
-                <AddNewContactModal/>
+                <AddNewContactModal clicked={this.saveContact}/>
                 <button type="button" className="btn btn-dark" id="btn_add_contact" data-toggle="modal"
                         data-target="#add_new_contact_modal">Add contact
                 </button>
@@ -50,7 +68,7 @@ class PhoneListItem extends React.Component {
             <tbody>
             {this.props.items.map(item => {
                 return (
-                    <tr>
+                    <tr key={item.phone}>
                         <td>{item.index}</td>
                         <td>{item.name}</td>
                         <td>{item.last_name}</td>
@@ -120,7 +138,7 @@ class AddNewContactModal extends React.Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-dark" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-dark">Add contact</button>
+                            <button type="button" className="btn btn-dark" onClick={this.props.clicked}>Add contact</button>
                         </div>
                     </div>
                 </div>
