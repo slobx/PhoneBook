@@ -16,3 +16,7 @@
 #input_search_last_name {
     margin-bottom: 10px;
 }
+
+.alert{
+    display:none;
+}
