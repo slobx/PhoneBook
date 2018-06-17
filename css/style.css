@@ -1,6 +1,7 @@
 #btn_add_contact {
-    position: fixed;
-    right: 50px;
+    position: relative;
+    float: right;
+    margin-right: 30px;
 }
 
 .input-group-text {
@@ -14,9 +15,48 @@
 }
 
 #input_search_last_name {
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
 .alert{
     display:none;
 }
+
+#phone_list_wrapper {
+    display: inline-block;
+    width: 95%;
+}
+
+#delete_contact_wrapper {
+    display: inline-block;
+    width: 5%;
+    margin-bottom: 15px;
+    padding-left: 1px;
+}
+
+
+#delete_contact_row {
+    height: 49px;
+
+}
+
+#delete_contact_row_data {
+    display: flex;
+    background-color: #212529;
+    justify-content: center;
+    align-content: center;
+    border-radius: 10px;
+    height: 48px;
+    width: 45px;
+    cursor: pointer;
+}
+
+.fa-times {
+    margin-top: 13px;
+    color: white;
+}
+
+#delete_contact_row_data:hover  {
+    background-color: #343a40;
+}
+
