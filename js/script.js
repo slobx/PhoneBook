@@ -17,7 +17,7 @@ class App extends React.Component {
 
 
     searchByLastName = (e) => {
-        var filter, table, tr, tr2, td, i;
+        let filter, table, tr, tr2, td, i;
         filter = e.target.value.toUpperCase();
         table = document.getElementById("contacts_table");
         tr = table.getElementsByTagName("tr");
@@ -27,10 +27,10 @@ class App extends React.Component {
             if (td) {
                 if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
-                    tr2[i-1].style.display = "";
+                    tr2[i - 1].style.display = "";
                 } else {
                     tr[i].style.display = "none";
-                    tr2[i-1].style.display = "none";
+                    tr2[i - 1].style.display = "none";
                 }
             }
         }
@@ -59,18 +59,24 @@ class App extends React.Component {
     };
 
     saveContact = () => {
-        if ($('#name_input').val() && $('#last_name_input').val() && $('#phone_input').val()) {
-            $('#add_new_contact_modal').modal('hide');
-            $('#add_new_contact_modal').on('hidden.bs.modal', function (e) {
-                $('#name_input').val('');
-                $('#last_name_input').val('');
-                $('#phone_input').val('');
+        let name_input = $('#name_input');
+        let last_name_input = $('#last_name_input');
+        let phone_input =  $('#phone_input');
+        let add_new_contact_modal = $('#add_new_contact_modal');
+
+
+        if (name_input.val() && last_name_input.val() && phone_input.val()) {
+            add_new_contact_modal.modal('hide');
+            add_new_contact_modal.on('hidden.bs.modal', function (e) {
+                name_input.val('');
+                last_name_input.val('');
+                phone_input.val('');
             });
 
             let contact = {
-                name: $('#name_input').val(),
-                last_name: $('#last_name_input').val(),
-                phone: $('#phone_input').val()
+                name: name_input.val(),
+                last_name: last_name_input.val(),
+                phone: phone_input.val()
             };
 
             this.setState(prevState => ({
@@ -94,6 +100,14 @@ class App extends React.Component {
 
     };
 
+    handleEnter = (e) => {
+
+        if ($("#add_new_contact_modal").hasClass('in') && (e.keycode == 13 || e.which == 13)) {
+            this.saveContact();
+        }
+
+    };
+
 
     loadContactsFromAPI = () => {
         fetch("http://localhost:3000/api/contacts.json")
@@ -112,6 +126,7 @@ class App extends React.Component {
     render() {
         return (
             <div id="app_wrapper">
+
                 <input className="form-control" id="input_search_last_name" onKeyUp={this.searchByLastName} type="text"
                        placeholder="Search by last name..."/>
                 <div id="data_wrapper">
@@ -121,11 +136,16 @@ class App extends React.Component {
                     <div id="delete_contact_wrapper">
                         {this.state.phone_book_items.map((item, key) => {
                             return (
-                                <tr className="delete_contact_row" key={key}>
-                                    <td>
-                                        <div onClick={() => this.deleteContact(key)} id="delete_contact_row_data"><i className="fa fa-times"/></div>
-                                    </td>
-                                </tr>
+                                <table key={key}>
+                                    <tbody>
+                                    <tr className="delete_contact_row" key={key}>
+                                        <td>
+                                            <div onClick={() => this.deleteContact(key)} id="delete_contact_row_data"><i
+                                                className="fa fa-trash"/></div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             )
                         })}
                     </div>
@@ -162,7 +182,7 @@ class App extends React.Component {
                                     <span className="input-group-text" id="inputGroup-sizing-default">
                                         <i className="fa fa-phone"/>&nbsp;&nbsp;Phone</span>
                                     </div>
-                                    <input type="text" className="form-control" id="phone_input"/>
+                                    <input type="tel" className="form-control" id="phone_input"/>
                                 </div>
                             </div>
                             <div className="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
@@ -202,7 +222,7 @@ class PhoneListItem extends React.Component {
                     <tr key={key} id="filter_cell">
                         <td>{key + 1}</td>
                         <td>{item.name}</td>
-                        <td >{item.last_name}</td>
+                        <td>{item.last_name}</td>
                         <td>{item.phone}</td>
                     </tr>
                 )

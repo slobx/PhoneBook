@@ -1,7 +1,26 @@
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+
+body {
+    background: url("../assets/background.jpg") no-repeat fixed center;
+    opacity: 0.90;
+    background-size:cover;
+}
+
+#title {
+    text-align: center;
+    padding-top: 45px;
+    color: white;
+    font-size: 36px;
+}
+
 #btn_add_contact {
     position: relative;
     float: right;
-    margin-right: 30px;
+    margin-right: 5%;
+    background-color: cadetblue;
 }
 
 .input-group-text {
@@ -11,11 +30,14 @@
 }
 
 #app_wrapper {
-    margin: 50px;
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 #input_search_last_name {
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    width: 95%;
 }
 
 .alert{
@@ -42,16 +64,16 @@
 
 #delete_contact_row_data {
     display: flex;
-    background-color: #212529;
+    background-color: indianred;
     justify-content: center;
     align-content: center;
-    border-radius: 10px;
-    height: 48px;
+    /*border-radius: 15px;*/
+    height: 47px;
     width: 45px;
     cursor: pointer;
 }
 
-.fa-times {
+.fa-trash {
     margin-top: 13px;
     color: white;
 }
