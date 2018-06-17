@@ -37,11 +37,11 @@ class App extends React.Component {
 
     };
 
-    deleteContact = (key) => {
+    deleteContact = (key, item_id) => {
         let contacts = [...this.state.phone_book_items];
         contacts.splice(key, 1);
         this.setState({phone_book_items: contacts});
-        let deletedContact = {"id": key};
+        let deletedContact = {"id": item_id};
 
         fetch('http://localhost:3000/api/delete', {
             method: 'POST',
@@ -116,7 +116,7 @@ class App extends React.Component {
             })
             .then(contacts => {
                 this.setState({phone_book_items: contacts});
-                console.log("CONTACTS" + contacts);
+                console.log("CONTACTS" + JSON.stringify(contacts));
             })
             .catch(err => {
                 console.log(err);
@@ -138,9 +138,9 @@ class App extends React.Component {
                             return (
                                 <table key={key}>
                                     <tbody>
-                                    <tr className="delete_contact_row" key={key}>
+                                    <tr className="delete_contact_row" key={item.id}>
                                         <td>
-                                            <div onClick={() => this.deleteContact(key)} id="delete_contact_row_data"><i
+                                            <div onClick={() => this.deleteContact(key, item.id)} id="delete_contact_row_data"><i
                                                 className="fa fa-trash"/></div>
                                         </td>
                                     </tr>
@@ -220,7 +220,7 @@ class PhoneListItem extends React.Component {
             {this.props.items.map((item, key) => {
                 return (
                     <tr key={key} id="filter_cell">
-                        <td>{key + 1}</td>
+                        <td>{key+1}</td>
                         <td>{item.name}</td>
                         <td>{item.last_name}</td>
                         <td>{item.phone}</td>
