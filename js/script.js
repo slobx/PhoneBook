@@ -65,12 +65,12 @@ class App extends React.Component {
 
 
             //adds contacts to the server and if succeed loads it again from server
-            fetch('http://localhost:3000/api/add_contact', {
+            fetch('https://phonebook-slobx.herokuapp.com/api/add_contact', {
                 method: 'POST',
                 body: JSON.stringify(contact),
                 headers: {
                     'Content-Type': 'application/json'
-                },
+                }
             }).then(() => {
                 this.loadContactsFromAPI();
             }).catch(err => {
@@ -90,7 +90,7 @@ class App extends React.Component {
         this.setState({phone_book_items: contacts});
         let deletedContact = {"id": item_id};
 
-        fetch('http://localhost:3000/api/delete_contact', {
+        fetch('https://phonebook-slobx.herokuapp.com/api/delete_contact', {
             method: 'DELETE',
             body: JSON.stringify(deletedContact),
             headers: {
@@ -103,7 +103,7 @@ class App extends React.Component {
 
     //loads contacts from server
     loadContactsFromAPI = () => {
-        fetch("http://localhost:3000/api/contacts_list")
+        fetch("https://phonebook-slobx.herokuapp.com/api/contacts_list")
             .then(response => {
                 return response.json()
             })
