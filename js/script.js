@@ -43,27 +43,32 @@ class App extends React.Component {
         this.setState({phone_book_items: contacts});
         let deletedContact = {"id": item_id};
 
-        fetch('http://localhost:3000/api/delete', {
-            method: 'POST',
+        fetch('http://localhost:3000/api/delete_contact', {
+            method: 'DELETE',
             body: JSON.stringify(deletedContact),
             headers: {
                 "Content-Type": "application/json"
             }
         }).then(res => console.log(res))
-
     };
 
 
     closeAlert = () => {
+        $('#name_input').val('');
+        $('#last_name_input').val('');
+        $('#phone_input').val('');
         $("#alert").slideUp();
+    };
+
+    setFocus = () => {
+        $('#name_input').focus();
     };
 
     saveContact = () => {
         let name_input = $('#name_input');
         let last_name_input = $('#last_name_input');
-        let phone_input =  $('#phone_input');
+        let phone_input = $('#phone_input');
         let add_new_contact_modal = $('#add_new_contact_modal');
-
 
         if (name_input.val() && last_name_input.val() && phone_input.val()) {
             add_new_contact_modal.modal('hide');
@@ -84,13 +89,13 @@ class App extends React.Component {
             }));
 
 
-            fetch('http://localhost:3000/api/post', {
+            fetch('http://localhost:3000/api/add_contact', {
                 method: 'POST',
                 body: JSON.stringify(contact),
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(res => console.log(res))
+                    'Content-Type': 'application/json'
+                },
+            }).then(res => console.log("Result" + res))
                 .then(() => {
                     this.loadContactsFromAPI();
                 });
@@ -101,22 +106,22 @@ class App extends React.Component {
     };
 
     handleEnter = (e) => {
-
-        if ($("#add_new_contact_modal").hasClass('in') && (e.keycode == 13 || e.which == 13)) {
-            this.saveContact();
+        e.preventDefault();
+        if (e.keyCode === 13) {
+            $("#btn_modal_submit").click();
         }
 
     };
 
 
     loadContactsFromAPI = () => {
-        fetch("http://localhost:3000/api/contacts.json")
+        fetch("http://localhost:3000/api/contacts_list")
             .then(response => {
                 return response.json()
             })
             .then(contacts => {
+                console.log(contacts.toString());
                 this.setState({phone_book_items: contacts});
-                console.log("CONTACTS" + JSON.stringify(contacts));
             })
             .catch(err => {
                 console.log(err);
@@ -140,8 +145,10 @@ class App extends React.Component {
                                     <tbody>
                                     <tr className="delete_contact_row" key={item.id}>
                                         <td>
-                                            <div onClick={() => this.deleteContact(key, item.id)} id="delete_contact_row_data"><i
-                                                className="fa fa-trash"/></div>
+                                            <span data-toggle="tooltip" data-placement="top" title="Delete contact">
+                                            <div onClick={() => this.deleteContact(key, item.id)}
+                                                 id="delete_contact_row_data"><i
+                                                className="fa fa-trash"/></div></span>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -151,14 +158,15 @@ class App extends React.Component {
                     </div>
                 </div>
                 <button type="button" className="btn btn-dark" id="btn_add_contact" data-toggle="modal"
-                        data-target="#add_new_contact_modal">Add contact
+                        data-target="#add_new_contact_modal" onClick={this.setFocus}>Add contact
                 </button>
                 <div className="modal fade" id="add_new_contact_modal" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLongTitle">Add new contact</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                                        onClick={this.closeAlert}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -168,21 +176,24 @@ class App extends React.Component {
                                     <span className="input-group-text" id="inputGroup-sizing-default">
                                         <i className="fa fa-user"/>&nbsp;&nbsp;First Name</span>
                                     </div>
-                                    <input type="text" className="form-control" id="name_input" autoFocus/>
+                                    <input type="text" className="form-control" id="name_input"
+                                           onKeyUp={this.handleEnter} autoFocus/>
                                 </div>
                                 <div className="input-group mb-3">
                                     <div className="input-group-prepend">
                                     <span className="input-group-text" id="inputGroup-sizing-default">
                                         <i className="fa fa-users"/>&nbsp;&nbsp;Last Name</span>
                                     </div>
-                                    <input type="text" className="form-control" id="last_name_input"/>
+                                    <input type="text" className="form-control" id="last_name_input"
+                                           onKeyUp={this.handleEnter}/>
                                 </div>
                                 <div className="input-group mb-3">
                                     <div className="input-group-prepend">
                                     <span className="input-group-text" id="inputGroup-sizing-default">
                                         <i className="fa fa-phone"/>&nbsp;&nbsp;Phone</span>
                                     </div>
-                                    <input type="tel" className="form-control" id="phone_input"/>
+                                    <input type="tel" className="form-control" id="phone_input"
+                                           onKeyUp={this.handleEnter}/>
                                 </div>
                             </div>
                             <div className="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
@@ -197,7 +208,8 @@ class App extends React.Component {
                                 <button type="button" className="btn btn-dark" data-dismiss="modal"
                                         onClick={this.closeAlert}>Close
                                 </button>
-                                <button type="button" className="btn btn-dark" onClick={this.saveContact}>Add
+                                <button type="button" className="btn btn-dark" id="btn_modal_submit"
+                                        onClick={this.saveContact}>Add
                                     contact
                                 </button>
 
@@ -220,7 +232,7 @@ class PhoneListItem extends React.Component {
             {this.props.items.map((item, key) => {
                 return (
                     <tr key={key} id="filter_cell">
-                        <td>{key+1}</td>
+                        <td>{key + 1}</td>
                         <td>{item.name}</td>
                         <td>{item.last_name}</td>
                         <td>{item.phone}</td>

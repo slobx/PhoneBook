@@ -1,1 +1,2 @@
-live-server --port=80 --host=slobx.com
+npm install -g live-server
+live-server --port=80
